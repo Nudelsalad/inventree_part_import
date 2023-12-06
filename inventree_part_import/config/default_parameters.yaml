@@ -65,6 +65,7 @@ Package Type:
         - Package / Case
         - Termination Style
         - Mounting form
+        - Imperial Size
 Pitch:
     _aliases:
         - Pitch - Mating
@@ -122,5 +123,29 @@ Supply Voltage:
         - Voltage - Supply, Single (V+)
         - Voltage - Supply, Dual (V±)
 Temperature Coefficient:
+Operating Temperature:
+    _aliases:
+        - Operating Temperature
+        - Operating Temperature Range
+        - Operating Temperature (Max)
+        - Operating Temperature (Min)
+        - Operating Temperature (TJ)
+        - Operating Temperature (TA)
+        - Operating Temperature (TJ) (Max)
+        - Operating Temperature (TJ) (Min)
+        - Operating Temperature (TJ) (Nom)
+        - Operating Temperature (TJ) (Pb-F)
+Junction Temperature:
+    _aliases:
+        - Temperature - Junction
+        - TJ
+        - Junction Temperature (Tj)
+        - Junction Temperature (Max)
+        - Junction Temperature (Min)
+        - Junction Temperature (Tj) (Max)
+        - Junction Temperature (Tj) (Min)
+        - Junction Temperature (Tj) (Nom)
+
+
 Tolerance:
 Type:

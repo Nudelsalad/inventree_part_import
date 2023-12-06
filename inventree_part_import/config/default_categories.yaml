@@ -1,7 +1,20 @@
+# This file should specify all your InvenTree categories, as well as metadata like category aliases, parameters, etc. for them.
+#
+# It's defined as hierarchical tree structure where every 'node' represents a category.
+# Additionally you can define the following meta attributes (starting with _):
+#
+# _aliases      has to be a list of supplier category names which will be mapped to that category
+# _description  specifies the categories description (defaults to category name)
+# _ignore       makes inventree_part_import ignore that category, as well as any subcategories
+# _parameters   has to be a list of parameter names (for parameters defined in parameters.yaml) this category uses
+# _structural   can be set to true to make the category structural
 Electronics:
     _description: Electronic Components
     Cables and Wires:
     Connectors:
+        _description: Connectors
+        _parameters:
+            - Operating Temperature
         Audio Connectors:
             _aliases:
                 - RCA Phono Connectors
@@ -40,16 +53,22 @@ Electronics:
             _aliases:
                 - USB, DVI, HDMI Connectors
                 - USB Connectors
+                - Barrel - Audio Connectors
+                - Memory Connectors - PC Card Sockets
+                - Modular Connectors - Jacks With Magnetics
             _description: Connectors for Digital Interfaces
             _parameters:
                 - Mounting Type
                 - Number of Contacts
-        Jumpers:
+        Header:
             _aliases:
-                - Shunts, Jumpers
-            _description: Jumpers, Shunts
+                - Rectangular Connectors - Headers, Male Pins
+                - Rectangular Connectors - Headers, Receptacles, Female Sockets
+            _description: Jumpers, Header
             _parameters:
+                - Mounting Type
                 - Number of Contacts
+                - Number of Rows
                 - Pitch
                 - Rated Current
                 - Rated Voltage
@@ -62,31 +81,72 @@ Electronics:
                 - Pitch
                 - Rated Current
                 - Rated Voltage
+        Board-to-Board:
+            _aliases:
+                - Rectangular Connectors - Arrays, Edge Type, Mezzanine (Board to Board)
+                - Rectangular Connectors - Spring Loaded
+            _parameters:
+                - Number of Contacts
+                - Number of Rows
+                - Pitch
+                - Rated Current
+                - Rated Voltage
+            _description: Board-to-Board Connectors
+        Coaxial:
+            _aliases:
+                - Coaxial Connectors (RF)
+            _parameters:
+                - Impedance
+                - Mounting Type
+                - Connector Type
+        FPC:
+            _aliases:
+                - FFC, FPC (Flat Flexible) Connectors
+            _parameters:
+                - Mounting Type
+                - Connector Type
+                - Number of Contacts
+                - Number of Rows
+                - Pitch
+                - Rated Current
+                - Rated Voltage
+
     Crystals, Oscillators:
+        _aliases:
+            - Crystals
+            - Oscillators
+        _description: Crystals and Oscillators
         _parameters:
             - Frequency
             - Mounting Type
             - Package Type
             - Size
-        Crystals:
-            _parameters:
-                - ESR
-        Oscillators:
+            - ESR
+            - Operating Temperature
     Diodes:
         _parameters:
             - Mounting Type
             - Package Type
             - Forward Voltage
+            - Operating Temperature
         LEDs:
+            _description: Light Emitting Diodes
+            _aliases:
+                - LED Indication - Discrete
+                - Addressable, Specialty
             _parameters:
                 - Color
         Schottky:
+            _aliases:
+                - Diodes - Rectifiers - Single
+                - Schottky Diodes
             _description: Schottky Diodes
             _parameters:
                 - Reverse Breakdown Voltage
                 - Rated Current
         Standard:
             _aliases:
+                - Diodes - Rectifiers - Single
                 - Single Diodes
                 - Diode Arrays
             _description: Standard Rectifier Diodes, Small Signal Diodes
@@ -95,12 +155,14 @@ Electronics:
                 - Rated Current
         TVS:
             _aliases:
+                - TVS - Diodes
                 - Transient Voltage Suppressors (TVS)
             _description: Transient-Voltage-Suppression Diodes
             _parameters:
                 - Rated Current
         Zener:
             _aliases:
+                - Diodes - Zener - Single
                 - Zener Diodes
             _description: Zener Diodes
             _parameters:
@@ -108,6 +170,8 @@ Electronics:
                 - Rated Power
     Electromechanical:
         _description: Electromechanical Components
+        _parameters:
+            - Operating Temperature
         Motors:
         Potentiometers:
             _aliases:
@@ -124,6 +188,10 @@ Electronics:
                 - Rated Current
                 - Rated Voltage
         Switches:
+            _description: Switches
+            _aliases:
+                - Tactile Switches
+                - Slide Switches
             _parameters:
                 - Mounting Type
                 - Rated Current
@@ -132,6 +200,7 @@ Electronics:
         _parameters:
             - Mounting Type
             - Package Type
+            - Operating Temperature
         Amplifiers:
             _description: Amplifier ICs
             _parameters:
@@ -140,6 +209,11 @@ Electronics:
                 _aliases:
                     - Operational Amplifier
             Instrumentation Amplifiers:
+        Sensor:
+            _aliases:
+                - Humidity, Moisture Sensors
+                - Motion Sensors - IMUs (Inertial Measurement Units)
+                - PMIC - Current Regulation/Management
         Audio:
             _description: Audio ICs
         Data Acquisition:
@@ -178,14 +252,21 @@ Electronics:
             Logic Gates:
                 _aliases:
                     - Gates and Inverters
-            PLLs:
+            Clock/Timing:
                 _aliases:
+                    - Clock/Timing - Clock Generators, PLLs, Frequency Synthesizers
                     - Clock Generators, PLLs, Frequency Synthesizers
                 _description: Phase-Locked Loops
             Shift Registers:
+                _aliases:
+                    - Logic - Translators, Level Shifters
+
         Memory:
             _description: Memory ICs
         Microcontrollers:
+            _description: Microcontroller ICs
+            _aliases:
+                - Embedded - Microcontrollers
             _parameters:
                 - Frequency
                 - Supply Voltage
@@ -208,15 +289,19 @@ Electronics:
                 _aliases:
                     - Linear, Low Drop Out (LDO) Regulators
                     - Linear Voltage Regulators (LDO)
+                    - PMIC - Voltage Regulators - Linear
+
                 _parameters:
                     - Input Voltage
                     - Output Voltage
                     - Output Current
-                    - Output Polarity
                     - Output Type
             DC-DC Converters:
                 _aliases:
                     - DC DC Converters
+                    - Spezialanwendungen
+                    - PMIC - Voltage Regulators - DC DC Switching Regulators
+
                 _parameters:
                     - Input Voltage
                     - Output Voltage
@@ -239,11 +324,26 @@ Electronics:
                     - Output Voltage
                     - Output Current
                     - Tolerance
+    RF:
+        _description: RF Components
+        Antenna:
+        Chipset:
+        Filter:
+            _aliases:
+                - Balun
+            _parameters:
+                - Frequency
+                - Impedance
+                - Rated Current
+                - Rated Voltage
     Passives:
         _description: Passive Components
         _parameters:
             - Mounting Type
             - Package Type
+            - Size
+            - Operating Temperature
+            - Operating Voltage
         Capacitors:
             _parameters:
                 - Capacitance
@@ -267,7 +367,20 @@ Electronics:
                     - Multilayer Ceramic Capacitors MLCC - Leaded
                 _description: Ceramic Capacitors
                 _parameters:
-                    - Temperature Coefficient
+                    - Dielectric
+            Polymer:
+                _aliases:
+                    - Aluminum - Polymer Capacitors
+                    - Tantalum - Polymer Capacitors
+                _description: Polymer Capacitors
+            Super Capacitors:
+                _aliases:
+                    - Electric Double Layer Capacitors (EDLC), Supercapacitors
+                _description: Super Capacitors
+            Tantalum:
+                _aliases:
+                    - Tantalum Capacitors
+                _description: Tantalum Capacitors
             Others:
                 _aliases:
                     - Film Capacitors
@@ -275,6 +388,7 @@ Electronics:
         Ferrite Beads:
             _aliases:
                 - Ferrite Beads and Chips
+                - Ferritperlen und -chips
             _parameters:
                 - Impedance
                 - Resistance
@@ -288,14 +402,43 @@ Electronics:
                 - Tolerance
                 - Rated Current
                 - Size
-        PTC Resettable Fuses:
+        Fuses:
+            _aliases:
+                - Fuses
+            _description: Fuses
             _parameters:
+                - Rated Current
                 - Rated Voltage
+            PTC Resettable Fuses:
+                _aliases:
+                    - PTC Resettable Fuses
+                _parameters:
+                    - Rated Voltage                
         Resistors:
+            _description: Resistors
             _parameters:
                 - Resistance
                 - Tolerance
                 - Rated Power
+                - Temperature Coefficient
+                - Operating Temperature
+                - Operating Voltage
+                - Package Type
+                - Mounting Type
+            _aliases:
+                - Chip Resistor - Surface Mount
+                - Chip Resistor - Leaded
+                - Chip Resistor - Arrays
+                - Through Hole Resistors
+                - Through Hole Resistors - Arrays
+                - Through Hole Resistors - Fixed Value
+            
+            Potentiometers:
+                _aliases:
+                    - Potentiometers, Variable Resistors
+                    - Rotary Potentiometers, Rheostats
+                _description: Potentiometers
+            
     Transistors:
         _parameters:
             - Mounting Type
@@ -330,6 +473,10 @@ Mechanical:
         Nuts:
         Screws:
         Standoffs:
+            _aliases:
+                - Board Spacers, Standoffs
         Washers:
 PCBs:
     _description: Printed Circuit Boards
+_aliases:
+    - Oberflächenmontage
